@@ -10,7 +10,11 @@ import org.springframework.transaction.annotation.Transactional
 class UserService(
     private val userRepository: UserRepository
 ) {
-    fun createUser(user: User) {
-        userRepository.save(user)
+    fun createUser(user: User): User {
+        return userRepository.save(user)
+    }
+
+    fun getUserByUserId(userId: Long): User? {
+        return userRepository.findByUserId(userId)
     }
 }
