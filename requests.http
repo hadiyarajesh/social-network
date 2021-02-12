@@ -1,0 +1,34 @@
+### Create User
+POST http://localhost:8080/neo4j/users
+Content-Type: application/json
+
+{
+  "userId" : 10000001,
+  "username": "username1",
+  "fullName": "User1"
+}
+
+
+### Create Post
+POST http://localhost:8080/neo4j/posts
+Content-Type: application/json
+
+{
+  "postId": 10000001,
+  "mediaType": "PHOTO",
+  "caption": "This is first post of first user",
+  "user": {
+    "userId" : 10000001,
+    "username": "username1",
+    "fullName": "User1"
+  }
+}
+
+
+### Follow user
+POST http://localhost:8080/follow/10000001
+Content-Type: application/json
+
+{
+  "userToFollowId": 10000002
+}

@@ -11,6 +11,6 @@ class PostService(
     private val postRepository: PostRepository
 ) {
     fun createPost(post: Post) {
-
+        postRepository.save(post)
     }
 }
