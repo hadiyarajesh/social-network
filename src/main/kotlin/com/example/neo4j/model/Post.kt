@@ -7,7 +7,7 @@ import org.springframework.data.neo4j.core.schema.Relationship
 data class Post(
     @Id
     @GeneratedValue
-    val id: Long? = null,
+    var id: Long? = null,
     val postId: Long,
     val mediaType: String,
     val caption: String?,

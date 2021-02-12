@@ -24,6 +24,8 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.testcontainers:neo4j:1.15.2")
+    testImplementation("org.testcontainers:junit-jupiter:1.15.2")
 }
 
 tasks.withType<KotlinCompile> {
