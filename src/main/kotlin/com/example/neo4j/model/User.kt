@@ -9,7 +9,7 @@ import org.springframework.data.neo4j.core.schema.Relationship
 data class User(
     @Id
     @GeneratedValue
-    val id: Long? = null,
+    var id: Long? = null,
     val userId: Long,
     val username: String,
     val fullName: String?,
