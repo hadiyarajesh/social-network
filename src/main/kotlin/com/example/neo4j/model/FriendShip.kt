@@ -7,7 +7,6 @@ import java.time.Instant
 @RelationshipProperties()
 data class FriendShip(
     val since: Instant,
-
     @TargetNode
-    val targetNode: User
+    val targetUser: User
 )
