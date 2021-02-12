@@ -1,12 +1,11 @@
-package com.example.neo4j
+package com.example.neo4j.repository
 
 import com.example.neo4j.model.Post
 import com.example.neo4j.model.User
-import com.example.neo4j.repository.PostRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.autoconfigure.data.neo4j.DataNeo4jTest
 import org.springframework.data.neo4j.core.Neo4jTemplate
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
@@ -15,8 +14,8 @@ import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 
 @Testcontainers
-@SpringBootTest
-class Neo4jApplicationTests {
+@DataNeo4jTest
+class PostRepositoryTest {
 
     @Autowired
     lateinit var postRepository: PostRepository

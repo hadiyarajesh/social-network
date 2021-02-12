@@ -15,5 +15,5 @@ data class User(
     val fullName: String?,
 
     @Relationship(type = "IS_FOLLOWING")
-    val friendships: Set<FriendShip> = setOf(),
+    val friendships: MutableSet<FriendShip> = mutableSetOf(),
 )

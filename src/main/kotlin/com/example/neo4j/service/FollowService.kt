@@ -18,15 +18,9 @@ class FollowService(
         val currentUser = userRepository.findByUserId(currentUserId)
             ?: throw IllegalArgumentException("User $currentUserId not found")
 
-        val user = currentUser.copy(
-            id = currentUser.id,
-            userId = currentUser.userId,
-            username = currentUser.username,
-            fullName = currentUser.fullName,
-            friendships = setOf(FriendShip(Instant.now(), userToFollow))
-        )
 
-        userRepository.save(user)
+        currentUser.friendships.add(FriendShip(Instant.now(), userToFollow))
+        userRepository.save(currentUser)
         return true
     }
 }
