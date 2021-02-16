@@ -1,31 +1,27 @@
 package com.example.neo4j.service
 
 import com.example.neo4j.model.Post
+import com.example.neo4j.model.PostRequest
 import com.example.neo4j.repository.PostRepository
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 
 @Service
-/*@Transactional
-Getting
-Transaction must be open, but has already been closed
-if @Transactional is enabled
-* */
+//@Transactional
 class PostService(
     private val userService: UserService,
     private val postRepository: PostRepository
 
 ) {
-    fun createPost(userId: Long, post: Post): Post {
+    fun createPost(userId: Long, postRequest: PostRequest): Post {
         val user = userService.getUserByUserId(userId)
             ?: throw IllegalArgumentException("User $userId not found")
 
-        val newPost = post.copy(
-            postId = post.postId,
-            mediaType = post.mediaType,
-            caption = post.caption,
+        val post = Post(
+            postId = postRequest.postId,
+            mediaType = postRequest.mediaType,
+            caption = postRequest.caption,
             user = user
         )
-        return postRepository.save(newPost)
+        return postRepository.save(post)
     }
 }

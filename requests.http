@@ -3,25 +3,20 @@ POST http://localhost:8080/neo4j/users
 Content-Type: application/json
 
 {
-  "userId": 10000004,
-  "username": "username4",
-  "fullName": "User4"
+  "userId": 10000007,
+  "username": "username7",
+  "fullName": "User7"
 }
 
 
 ### Create Post
-POST http://localhost:8080/neo4j/posts/10000001
+POST http://localhost:8080/neo4j/posts/10000003
 Content-Type: application/json
 
 {
-  "postId": 10000001,
+  "postId": 10000003,
   "mediaType": "PHOTO",
-  "caption": "This is first post of first user",
-  "user": {
-    "userId": 10000001,
-    "username": "username1",
-    "fullName": "User1"
-  }
+  "caption": "This is first post of third user"
 }
 
 
@@ -30,5 +25,14 @@ POST http://localhost:8080/neo4j/follow/10000001
 Content-Type: application/json
 
 {
-  "userToFollowId": 10000003
+  "userId": 10000007
 }
+
+### Get user followers
+GET http://localhost:8080/neo4j/followers/10000001
+Content-Type: application/json
+
+
+### Get user following
+GET http://localhost:8080/neo4j/following/10000001?page=1&size=5
+Content-Type: application/json
