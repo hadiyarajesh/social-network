@@ -1,1 +1,1 @@
-rootProject.name = "neo4j"
+rootProject.name = "socialmedia"
