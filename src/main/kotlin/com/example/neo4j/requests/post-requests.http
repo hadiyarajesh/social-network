@@ -1,0 +1,9 @@
+### Create Post
+POST http://localhost:8080/posts/10000003
+Content-Type: application/json
+
+{
+  "postId": 10000003,
+  "mediaType": "PHOTO",
+  "caption": "This is first post of third user"
+}

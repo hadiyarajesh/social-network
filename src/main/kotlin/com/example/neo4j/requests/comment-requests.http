@@ -1,0 +1,26 @@
+### Create a comment on post
+POST http://localhost:8080/comments/create/10000001
+Content-Type: application/json
+
+{
+  "commentId": 10000002,
+  "postId": 10000001,
+  "text": "This is a comment"
+}
+
+### Delete a comment on post
+POST http://localhost:8080/comments/delete/10000001
+Content-Type: application/json
+
+{
+  "commentId": 10000001,
+  "postId": 10000001
+}
+
+### Get post likers
+GET http://localhost:8080/likes/likers/10000001
+Content-Type: application/json
+
+### Get total post likers
+GET http://localhost:8080/likes/totallikers/10000001
+Content-Type: application/json

@@ -1,0 +1,9 @@
+### Create User
+POST http://localhost:8080/users/
+Content-Type: application/json
+
+{
+  "userId": 10000001,
+  "username": "username1",
+  "fullName": "User1"
+}

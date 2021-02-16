@@ -16,10 +16,10 @@ import org.testcontainers.junit.jupiter.Testcontainers
 @Testcontainers
 @SpringBootTest
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
-class FollowServiceTest {
+class FriendshipServiceTest {
 
     @Autowired
-    lateinit var followService: FollowService
+    lateinit var friendshipService: FriendshipService
 
     @Autowired
     lateinit var template: Neo4jTemplate
