@@ -1,7 +1,7 @@
 package com.example.neo4j.service
 
 import com.example.neo4j.model.User
-import com.example.neo4j.repository.UserRepository
+import com.example.neo4j.repository.FollowRepository
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Slice
 import org.springframework.stereotype.Service
@@ -10,14 +10,14 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional
 class FollowService(
-    private val userRepository: UserRepository,
+    private val followRepository: FollowRepository
 ) {
     fun followUser(currentUserId: Long, userToFollowId: Long): Boolean {
         if (currentUserId == userToFollowId) {
             throw IllegalArgumentException("You can not follow yourself")
         }
 
-        userRepository.followUser(currentUserId, userToFollowId)
+        followRepository.followUser(currentUserId, userToFollowId)
         return true
     }
 
@@ -26,17 +26,21 @@ class FollowService(
             throw IllegalArgumentException("You can not unfollow yourself")
         }
 
-        userRepository.unfollowUser(currentUserId, userToUnfollowId)
+        followRepository.unfollowUser(currentUserId, userToUnfollowId)
         return true
     }
 
     fun getUserFollowing(currentUserId: Long, page: Int, size: Int): Slice<User> {
         val pageable = PageRequest.of(page, size)
-        return userRepository.getUserFollowing(currentUserId, pageable)
+        return followRepository.getUserFollowing(currentUserId, pageable)
     }
 
     fun getUserFollowers(currentUserId: Long, page: Int, size: Int): Slice<User> {
         val pageable = PageRequest.of(page, size)
-        return userRepository.getUserFollowers(currentUserId, pageable)
+        return followRepository.getUserFollowers(currentUserId, pageable)
+    }
+
+    fun isUserFollowing(currentUserId: Long, userToFollowId: Long): Boolean {
+        return followRepository.isUserFollowing(currentUserId, userToFollowId)
     }
 }

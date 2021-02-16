@@ -78,12 +78,22 @@ class Neo4jController(
         @RequestParam(defaultValue = "5") size: Int
     ): ResponseEntity<HashMap<String, Any?>> {
         val sliceable = followService.getUserFollowers(currentUserId, page, size)
+
         val responseMap = hashMapOf<String, Any?>()
+        responseMap["followers"] = sliceable.content
+        responseMap["currentPage"] = sliceable.number
+        responseMap["hasNext"] = sliceable.hasNext()
 
-        responseMap["followers"] = sliceable?.content
-        responseMap["currentPage"] = sliceable?.number
-        responseMap["hasNext"] = sliceable?.hasNext()
+        return ResponseEntity.ok(responseMap)
+    }
 
+    @GetMapping("/checkfollowing/{currentUserId}")
+    fun checkUserFollowing(
+        @PathVariable currentUserId: Long,
+        @RequestParam userId: Long
+    ): ResponseEntity<Map<String, Boolean>> {
+        val result = followService.isUserFollowing(currentUserId, userId)
+        val responseMap = mapOf("isFollowing" to result)
         return ResponseEntity.ok(responseMap)
     }
 }

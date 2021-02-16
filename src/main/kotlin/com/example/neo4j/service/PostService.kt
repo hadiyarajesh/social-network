@@ -14,7 +14,6 @@ class PostService(
 ) {
     fun createPost(userId: Long, postRequest: PostRequest): Post {
         val user = userService.getUserByUserId(userId)
-            ?: throw IllegalArgumentException("User $userId not found")
 
         val post = Post(
             postId = postRequest.postId,

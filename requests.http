@@ -29,10 +29,18 @@ Content-Type: application/json
 }
 
 ### Get user followers
-GET http://localhost:8080/neo4j/followers/10000001
+GET http://localhost:8080/neo4j/followers/10000003
 Content-Type: application/json
 
 
 ### Get user following
-GET http://localhost:8080/neo4j/following/10000001?page=1&size=5
+GET http://localhost:8080/neo4j/following/10000003
+Content-Type: application/json
+
+### Get user following
+GET http://localhost:8080/neo4j/following/10000003
+Content-Type: application/json
+
+### Check if user is following another user
+GET http://localhost:8080/neo4j/checkfollowing/10000002?userId=10000003
 Content-Type: application/json
