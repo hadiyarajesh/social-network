@@ -1,1 +1,1 @@
-rootProject.name = "socialmedia"
+rootProject.name = "social-media"
