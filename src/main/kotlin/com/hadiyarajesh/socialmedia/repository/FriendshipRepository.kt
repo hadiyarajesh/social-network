@@ -58,13 +58,13 @@ interface FriendshipRepository : Neo4jRepository<User, Long> {
         @Param("userToUnblockId") userToUnblockId: Long
     )
 
-    @Query("MATCH (u:User{userId:\$currentUserId})-[f:FOLLOWING]->(following) RETURN following ORDER BY following.id DESC SKIP \$skip LIMIT \$limit")
+    @Query("MATCH (u:User{userId:\$currentUserId})-[f:FOLLOWING]->(users) RETURN users ORDER BY users.id DESC SKIP \$skip LIMIT \$limit")
     fun getUserFollowing(
         @Param("currentUserId") currentUserId: Long,
         pageable: Pageable
     ): Slice<User>
 
-    @Query("MATCH (u:User{userId:\$currentUserId})<-[f:FOLLOWING]-(following) RETURN following ORDER BY following.id DESC SKIP \$skip LIMIT \$limit")
+    @Query("MATCH (u:User{userId:\$currentUserId})<-[f:FOLLOWING]-(users) RETURN users ORDER BY users.id DESC SKIP \$skip LIMIT \$limit")
     fun getUserFollowers(
         @Param("currentUserId") currentUserId: Long,
         pageable: Pageable

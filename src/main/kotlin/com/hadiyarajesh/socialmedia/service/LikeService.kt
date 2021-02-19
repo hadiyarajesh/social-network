@@ -30,4 +30,23 @@ class LikeService(
     fun getTotalPostLikers(postId: Long): Int {
         return likeRepository.getTotalPostLikers(postId)
     }
+
+    fun likeComment(userId: Long, postId: Long, commentId: Long): Boolean {
+        likeRepository.likeComment(userId, postId, commentId)
+        return true
+    }
+
+    fun unlikeComment(userId: Long, commentId: Long): Boolean {
+        likeRepository.unlikeComment(userId, commentId)
+        return true
+    }
+
+    fun getCommentLikers(postId: Long, commentId: Long, page: Int, size: Int): Slice<User> {
+        val pageable = PageRequest.of(page, size)
+        return likeRepository.getCommentLikers(postId, commentId, pageable)
+    }
+
+    fun getTotalCommentLikers(postId: Long, commentId: Long): Int {
+        return likeRepository.getTotalCommentLikers(postId, commentId)
+    }
 }

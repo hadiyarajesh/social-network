@@ -1,10 +1,10 @@
 ### Create a comment on post
-POST http://localhost:8080/comments/create/10000004
+POST http://localhost:8080/comments/create/10000001
 Content-Type: application/json
 
 {
-  "commentId": 10000007,
-  "postId": 10000005,
+  "commentId": 10000002,
+  "postId": 10000002,
   "text": "This is first comment"
 }
 

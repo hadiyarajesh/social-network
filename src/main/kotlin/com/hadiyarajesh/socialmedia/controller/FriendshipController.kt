@@ -117,7 +117,6 @@ class FriendshipController(
         responseMap["users"] = sliceable.content
         responseMap["currentPage"] = sliceable.number
         responseMap["hasNext"] = sliceable.hasNext()
-
         return responseMap
     }
 }

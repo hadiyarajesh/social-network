@@ -14,10 +14,37 @@ Content-Type: application/json
   "postId": 10000001
 }
 
+### Like a comment
+POST http://localhost:8080/likes/like/comment/10000003
+Content-Type: application/json
+
+{
+  "postId": 10000002,
+  "commentId": 10000002
+}
+
+### Unlike a comment
+POST http://localhost:8080/likes/unlike/comment/10000003
+Content-Type: application/json
+
+{
+  "commentId": 10000002
+}
+
+
 ### Get post likers
-GET http://localhost:8080/likes/likers/10000001
+GET http://localhost:8080/likes/likers/post/10000001
 Content-Type: application/json
 
 ### Get total post likers
-GET http://localhost:8080/likes/totallikers/10000001
+GET http://localhost:8080/likes/totallikers/post/10000001
+Content-Type: application/json
+
+
+### Get comment likers
+GET http://localhost:8080/likes/likers/comment/10000002?commentId=10000002
+Content-Type: application/json
+
+### Get total comment likers
+GET http://localhost:8080/likes/totallikers/comment/10000002?commentId=10000002
 Content-Type: application/json
