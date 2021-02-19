@@ -2,7 +2,9 @@ package com.hadiyarajesh.socialmedia.controller
 
 import com.hadiyarajesh.socialmedia.model.Comment
 import com.hadiyarajesh.socialmedia.model.CommentRequest
+import com.hadiyarajesh.socialmedia.model.User
 import com.hadiyarajesh.socialmedia.service.CommentService
+import org.springframework.data.domain.Slice
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -36,7 +38,7 @@ class CommentController(
         return ResponseEntity.ok(response)
     }
 
-    @PostMapping("delete/{userId}")
+    @DeleteMapping("delete/{userId}")
     fun deleteComment(
         @PathVariable userId: Long,
         @RequestBody commentRequest: CommentRequest
@@ -52,14 +54,8 @@ class CommentController(
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "5") size: Int
     ): ResponseEntity<HashMap<String, Any?>> {
-        val sliceable = commentService.getPostCommenters(postId, page, size)
-
-        val responseMap = hashMapOf<String, Any?>()
-        responseMap["commenters"] = sliceable.content
-        responseMap["currentPage"] = sliceable.number
-        responseMap["hasNext"] = sliceable.hasNext()
-
-        return ResponseEntity.ok(responseMap)
+        val users = commentService.getPostCommenters(postId, page, size)
+        return ResponseEntity.ok(createResponseMap(users))
     }
 
     @GetMapping("totalcommenters/{postId}")
@@ -67,5 +63,13 @@ class CommentController(
         val totalCommenters = commentService.getTotalPostCommenters(postId)
         val responseMap = mapOf("totalCommenters" to totalCommenters)
         return ResponseEntity.ok(responseMap)
+    }
+
+    fun createResponseMap(sliceable: Slice<User>): HashMap<String, Any?> {
+        val responseMap = hashMapOf<String, Any?>()
+        responseMap["users"] = sliceable.content
+        responseMap["currentPage"] = sliceable.number
+        responseMap["hasNext"] = sliceable.hasNext()
+        return responseMap
     }
 }

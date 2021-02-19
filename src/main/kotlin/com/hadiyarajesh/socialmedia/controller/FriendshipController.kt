@@ -78,8 +78,8 @@ class FriendshipController(
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "5") size: Int
     ): ResponseEntity<HashMap<String, Any?>> {
-        val sliceable = friendshipService.getPendingFollowRequest(currentUserId, page, size)
-        return ResponseEntity.ok(createResponseMap(sliceable))
+        val users = friendshipService.getPendingFollowRequest(currentUserId, page, size)
+        return ResponseEntity.ok(createResponseMap(users))
     }
 
     @GetMapping("/following/{currentUserId}")
@@ -88,8 +88,8 @@ class FriendshipController(
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "5") size: Int
     ): ResponseEntity<HashMap<String, Any?>> {
-        val sliceable = friendshipService.getUserFollowing(currentUserId, page, size)
-        return ResponseEntity.ok(createResponseMap(sliceable))
+        val users = friendshipService.getUserFollowing(currentUserId, page, size)
+        return ResponseEntity.ok(createResponseMap(users))
     }
 
     @GetMapping("/followers/{currentUserId}")
@@ -98,8 +98,8 @@ class FriendshipController(
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "5") size: Int
     ): ResponseEntity<HashMap<String, Any?>> {
-        val sliceable = friendshipService.getUserFollowers(currentUserId, page, size)
-        return ResponseEntity.ok(createResponseMap(sliceable))
+        val users = friendshipService.getUserFollowers(currentUserId, page, size)
+        return ResponseEntity.ok(createResponseMap(users))
     }
 
     @GetMapping("/checkfollowing/{currentUserId}")

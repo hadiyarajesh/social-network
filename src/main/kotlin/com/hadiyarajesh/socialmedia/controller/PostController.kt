@@ -16,8 +16,22 @@ class PostController(
         @PathVariable userId: Long,
         @RequestBody postRequest: PostRequest
     ): ResponseEntity<Map<String, Post>> {
-        val createdPost = postService.createPost(userId, postRequest)
-        val response = mapOf("post" to createdPost)
+        val post = postService.createPost(userId, postRequest)
+        val response = mapOf("post" to post)
         return ResponseEntity.ok(response)
+    }
+
+    @PatchMapping("edit/{postId}")
+    fun editPost(
+        @PathVariable postId: Long
+    ) {
+
+    }
+
+    @DeleteMapping("delete/{postId}")
+    fun deletePost(
+        @PathVariable postId: Long
+    ) {
+
     }
 }

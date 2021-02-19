@@ -18,7 +18,7 @@ Content-Type: application/json
 }
 
 ### Delete a comment on post
-POST http://localhost:8080/comments/delete/10000003
+DELETE http://localhost:8080/comments/delete/10000003
 Content-Type: application/json
 
 {

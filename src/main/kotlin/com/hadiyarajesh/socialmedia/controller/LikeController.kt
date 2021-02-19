@@ -39,8 +39,8 @@ class LikeController(
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "5") size: Int
     ): ResponseEntity<HashMap<String, Any?>> {
-        val sliceable = likeService.getPostLikers(postId, page, size)
-        return ResponseEntity.ok(createResponseMap(sliceable))
+        val users = likeService.getPostLikers(postId, page, size)
+        return ResponseEntity.ok(createResponseMap(users))
     }
 
     @GetMapping("totallikers/post/{postId}")
@@ -77,8 +77,8 @@ class LikeController(
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "5") size: Int
     ): ResponseEntity<HashMap<String, Any?>> {
-        val sliceable = likeService.getCommentLikers(postId, commentId, page, size)
-        return ResponseEntity.ok(createResponseMap(sliceable))
+        val users = likeService.getCommentLikers(postId, commentId, page, size)
+        return ResponseEntity.ok(createResponseMap(users))
     }
 
     @GetMapping("totallikers/comment/{postId}")
