@@ -3,7 +3,39 @@ POST http://localhost:8080/friendship/follow/10000001
 Content-Type: application/json
 
 {
-  "userId": 10000002
+  "userId": 10000004
+}
+
+### Approve Follow request
+POST http://localhost:8080/friendship/approve/10000003
+Content-Type: application/json
+
+{
+  "userId": 10000001
+}
+
+### Reject follow request
+POST http://localhost:8080/friendship/reject/10000004
+Content-Type: application/json
+
+{
+  "userId": 10000001
+}
+
+### Block user
+POST http://localhost:8080/friendship/block/10000003
+Content-Type: application/json
+
+{
+  "userId": 10000001
+}
+
+### Unblock user
+POST http://localhost:8080/friendship/unblock/10000004
+Content-Type: application/json
+
+{
+  "userId": 10000001
 }
 
 ### Unfollow user
@@ -13,6 +45,10 @@ Content-Type: application/json
 {
   "userId": 10000003
 }
+
+### Get pending follow requests
+GET http://localhost:8080/friendship/pending/10000004
+Content-Type: application/json
 
 ### Get user followers
 GET http://localhost:8080/friendship/followers/10000003
