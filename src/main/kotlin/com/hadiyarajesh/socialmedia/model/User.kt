@@ -12,4 +12,5 @@ data class User(
     val userId: Long,
     val username: String,
     val fullName: String?,
+    val isPrivate: Boolean
 )

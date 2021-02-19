@@ -14,11 +14,9 @@ class UserController(
     private val userService: UserService
 ) {
     @PostMapping("/")
-    fun createUser() {
-        fun createUser(@RequestBody user: User): ResponseEntity<Map<String, User>> {
-            val createdUser = userService.createUser(user)
-            val response = mapOf("user" to createdUser)
-            return ResponseEntity.ok(response)
-        }
+    fun createUser(@RequestBody user: User): ResponseEntity<Map<String, User>> {
+        val createdUser = userService.createUser(user)
+        val response = mapOf("user" to createdUser)
+        return ResponseEntity.ok(response)
     }
 }

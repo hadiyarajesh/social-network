@@ -1,5 +1,6 @@
 package com.hadiyarajesh.socialmedia.controller
 
+import com.hadiyarajesh.socialmedia.model.Comment
 import com.hadiyarajesh.socialmedia.model.CommentRequest
 import com.hadiyarajesh.socialmedia.service.CommentService
 import org.springframework.http.ResponseEntity
@@ -14,10 +15,24 @@ class CommentController(
     fun createComment(
         @PathVariable userId: Long,
         @RequestBody commentRequest: CommentRequest
+    ): ResponseEntity<Map<String, Comment>> {
+        val comment = commentService.createComment(
+            userId,
+            commentRequest.postId!!,
+            commentRequest.commentId,
+            commentRequest.text!!
+        )
+        val response = mapOf("comment" to comment)
+        return ResponseEntity.ok(response)
+    }
+
+    @PatchMapping("edit/{userId}")
+    fun editComment(
+        @PathVariable userId: Long,
+        @RequestBody commentRequest: CommentRequest
     ): ResponseEntity<Map<String, Boolean>> {
-        val isCommented =
-            commentService.createComment(userId, commentRequest.postId, commentRequest.commentId, commentRequest.text!!)
-        val response = mapOf("isCommented" to isCommented)
+        val isCommentEdited = commentService.editComment(userId, commentRequest.commentId, commentRequest.text!!)
+        val response = mapOf("isCommentEdited" to isCommentEdited)
         return ResponseEntity.ok(response)
     }
 
@@ -26,7 +41,7 @@ class CommentController(
         @PathVariable userId: Long,
         @RequestBody commentRequest: CommentRequest
     ): ResponseEntity<Map<String, Boolean>> {
-        val isCommentDeleted = commentService.deleteComment(userId, commentRequest.postId, commentRequest.commentId)
+        val isCommentDeleted = commentService.deleteComment(userId, commentRequest.postId!!, commentRequest.commentId)
         val response = mapOf("isCommentDeleted" to isCommentDeleted)
         return ResponseEntity.ok(response)
     }

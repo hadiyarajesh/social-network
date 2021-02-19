@@ -3,7 +3,8 @@ POST http://localhost:8080/users/
 Content-Type: application/json
 
 {
-  "userId": 10000001,
-  "username": "username1",
-  "fullName": "User1"
+  "userId": 10000006,
+  "username": "username6",
+  "fullName": "User6",
+  "isPrivate": true
 }
