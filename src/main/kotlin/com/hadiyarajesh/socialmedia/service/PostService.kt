@@ -1,8 +1,11 @@
 package com.hadiyarajesh.socialmedia.service
 
+import com.hadiyarajesh.socialmedia.exception.ResourceNotFound
 import com.hadiyarajesh.socialmedia.model.Post
-import com.hadiyarajesh.socialmedia.model.PostRequest
 import com.hadiyarajesh.socialmedia.repository.PostRepository
+import com.hadiyarajesh.socialmedia.repository.UserRepository
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Slice
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
@@ -10,20 +13,46 @@ import java.time.Instant
 @Service
 @Transactional
 class PostService(
-    private val userService: UserService,
-    private val postRepository: PostRepository
-
+    private val postRepository: PostRepository,
+    private val userRepository: UserRepository
 ) {
-    fun createPost(userId: Long, postRequest: PostRequest): Post {
-        val user = userService.getUserByUserId(userId)
+    fun createPost(userId: Long, postId: Long, mediaType: String, caption: String?): Post {
+        val user = userRepository.findByUserId(userId)
+            ?: throw ResourceNotFound("User $userId not found")
 
-        val post = Post(
-            postId = postRequest.postId,
-            mediaType = postRequest.mediaType,
-            caption = postRequest.caption,
-            createdAt = Instant.now(),
-            user = user
+        return postRepository.save(
+            Post(
+                postId = postId,
+                mediaType = mediaType,
+                caption = caption,
+                createdAt = Instant.now(),
+                totalLikes = 0,
+                totalComments = 0,
+                user = user
+            )
         )
-        return postRepository.save(post)
+    }
+
+    fun getPost(userId: Long, postId: Long): Post {
+        return postRepository.getPost(userId, postId)
+            ?: throw ResourceNotFound("Post $postId not found for User $userId")
+    }
+
+    fun editPost(userId: Long, postId: Long, caption: String?): Post {
+        return postRepository.editPost(userId, postId, caption)
+            ?: throw ResourceNotFound("Either user $userId or Post $postId not found")
+    }
+
+    fun deletePost(userId: Long, postId: Long) {
+        postRepository.deletePost(userId, postId)
+    }
+
+    fun getAllPostsByUser(userId: Long, page: Int, size: Int): Slice<Post> {
+        val pageable = PageRequest.of(page, size)
+        return postRepository.getAllPostByUser(userId, pageable)
+    }
+
+    fun getTotalPostCountByUser(userId: Long): Int {
+        return postRepository.getTotalPostsCountByUser(userId)
     }
 }

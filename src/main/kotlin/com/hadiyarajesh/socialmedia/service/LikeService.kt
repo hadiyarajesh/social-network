@@ -13,40 +13,36 @@ class LikeService(
     private val likeRepository: LikeRepository
 ) {
     fun likePost(userId: Long, postId: Long): Boolean {
-        likeRepository.likePost(userId, postId)
-        return true
+        return likeRepository.likePost(userId, postId) ?: false
     }
 
     fun unlikePost(userId: Long, postId: Long): Boolean {
-        likeRepository.unlikePost(userId, postId)
-        return true
+        return likeRepository.unlikePost(userId, postId) ?: false
     }
 
     fun getPostLikers(postId: Long, page: Int, size: Int): Slice<User> {
         val pageable = PageRequest.of(page, size)
-        return likeRepository.getPostLikers(postId, pageable)
+        return likeRepository.getAllPostLikers(postId, pageable)
     }
 
     fun getTotalPostLikers(postId: Long): Int {
-        return likeRepository.getTotalPostLikers(postId)
+        return likeRepository.getTotalLikersCountByPost(postId)
     }
 
     fun likeComment(userId: Long, postId: Long, commentId: Long): Boolean {
-        likeRepository.likeComment(userId, postId, commentId)
-        return true
+        return likeRepository.likeComment(userId, postId, commentId) ?: false
     }
 
     fun unlikeComment(userId: Long, commentId: Long): Boolean {
-        likeRepository.unlikeComment(userId, commentId)
-        return true
+        return likeRepository.unlikeComment(userId, commentId) ?: false
     }
 
     fun getCommentLikers(postId: Long, commentId: Long, page: Int, size: Int): Slice<User> {
         val pageable = PageRequest.of(page, size)
-        return likeRepository.getCommentLikers(postId, commentId, pageable)
+        return likeRepository.getAllCommentLikers(postId, commentId, pageable)
     }
 
     fun getTotalCommentLikers(postId: Long, commentId: Long): Int {
-        return likeRepository.getTotalCommentLikers(postId, commentId)
+        return likeRepository.getTotalLikersCountByComment(postId, commentId)
     }
 }

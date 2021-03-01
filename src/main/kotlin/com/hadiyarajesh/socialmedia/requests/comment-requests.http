@@ -1,35 +1,44 @@
 ### Create a comment on post
-POST http://localhost:8080/comments/create/10000001
+POST http://localhost:8080/posts/10000001/comments/
 Content-Type: application/json
 
 {
+  "userId": 10000002,
   "commentId": 10000002,
-  "postId": 10000002,
-  "text": "This is first comment"
+  "text": "This is sample comment"
 }
 
+### Get single comment of post
+GET http://localhost:8080/posts/10000001/comments/10000001
+Content-Type: application/json
+
 ### Edit a comment on post
-PATCH http://localhost:8080/comments/edit/10000001
+PATCH http://localhost:8080/posts/10000001/comments/
 Content-Type: application/json
 
 {
-  "commentId": 10000002,
-  "text": "This is a edited comment"
+  "userId": 10000001,
+  "commentId": 10000001,
+  "text": "This is a new edited comment"
 }
 
 ### Delete a comment on post
-DELETE http://localhost:8080/comments/delete/10000003
+DELETE http://localhost:8080/comments/delete/10000005
 Content-Type: application/json
 
 {
-  "commentId": 10000003,
-  "postId": 10000001
+  "commentId": 10000009,
+  "postId": 10000004
 }
 
+### Get total comment of post
+GET http://localhost:8080/posts/10000001/comments/all/
+Content-Type: application/json
+
 ### Get post commenters
-GET http://localhost:8080/comments/commenters/10000005
+GET http://localhost:8080/posts/10000001/comments/commenters/
 Content-Type: application/json
 
 ### Get total count of post commenters
-GET http://localhost:8080/comments/totalcommenters/10000005
+GET http://localhost:8080/posts/10000001/comments/total-commenters/
 Content-Type: application/json

@@ -1,6 +1,6 @@
 package com.hadiyarajesh.socialmedia.controller
 
-import com.hadiyarajesh.socialmedia.model.FriendshipRequest
+import com.hadiyarajesh.socialmedia.model.requests.FriendshipRequest
 import com.hadiyarajesh.socialmedia.model.User
 import com.hadiyarajesh.socialmedia.service.FriendshipService
 import org.springframework.data.domain.Slice
@@ -27,8 +27,8 @@ class FriendshipController(
         @PathVariable currentUserId: Long,
         @RequestBody friendshipRequest: FriendshipRequest
     ): ResponseEntity<Map<String, Boolean>> {
-        val isAccepted = friendshipService.approveFollowRequest(currentUserId, friendshipRequest.userId)
-        val response = mapOf("isAccepted" to isAccepted)
+        val isApproved = friendshipService.approveFollowRequest(currentUserId, friendshipRequest.userId)
+        val response = mapOf("isApproved" to isApproved)
         return ResponseEntity.ok(response)
     }
 
@@ -39,6 +39,16 @@ class FriendshipController(
     ): ResponseEntity<Map<String, Boolean>> {
         val isRejected = friendshipService.rejectFollowRequest(currentUserId, friendshipRequest.userId)
         val response = mapOf("isRejected" to isRejected)
+        return ResponseEntity.ok(response)
+    }
+
+    @PostMapping("/cancel/{currentUserId}")
+    fun cancelFollowRequest(
+        @PathVariable currentUserId: Long,
+        @RequestBody friendshipRequest: FriendshipRequest
+    ): ResponseEntity<Map<String, Boolean>> {
+        val isCanceled = friendshipService.cancelFollowRequest(currentUserId, friendshipRequest.userId)
+        val response = mapOf("isCanceled" to isCanceled)
         return ResponseEntity.ok(response)
     }
 
@@ -72,6 +82,16 @@ class FriendshipController(
         return ResponseEntity.ok(response)
     }
 
+    @PostMapping("remove/{currentUserId}")
+    fun removeUser(
+        @PathVariable currentUserId: Long,
+        @RequestBody friendshipRequest: FriendshipRequest
+    ): ResponseEntity<Map<String, Boolean>> {
+        val isRemoved = friendshipService.removeUser(currentUserId, friendshipRequest.userId)
+        val responseMap = mapOf("isRemoved" to isRemoved)
+        return ResponseEntity.ok(responseMap)
+    }
+
     @GetMapping("/pending/{currentUserId}")
     fun getPendingFollowRequest(
         @PathVariable currentUserId: Long,
@@ -82,23 +102,35 @@ class FriendshipController(
         return ResponseEntity.ok(createResponseMap(users))
     }
 
-    @GetMapping("/following/{currentUserId}")
-    fun getUserFollowing(
+    @GetMapping("/sent/{currentUserId}")
+    fun getSentFollowRequest(
         @PathVariable currentUserId: Long,
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "5") size: Int
     ): ResponseEntity<HashMap<String, Any?>> {
-        val users = friendshipService.getUserFollowing(currentUserId, page, size)
+        val users = friendshipService.getSentFollowRequest(currentUserId, page, size)
+        return ResponseEntity.ok(createResponseMap(users))
+    }
+
+    @GetMapping("/following/{currentUserId}")
+    fun getUserFollowing(
+        @PathVariable currentUserId: Long,
+        @RequestParam userId: Long,
+        @RequestParam(defaultValue = "0") page: Int,
+        @RequestParam(defaultValue = "5") size: Int
+    ): ResponseEntity<HashMap<String, Any?>> {
+        val users = friendshipService.getUserFollowing(currentUserId, userId, page, size)
         return ResponseEntity.ok(createResponseMap(users))
     }
 
     @GetMapping("/followers/{currentUserId}")
     fun getUserFollowers(
         @PathVariable currentUserId: Long,
+        @RequestParam userId: Long,
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "5") size: Int
     ): ResponseEntity<HashMap<String, Any?>> {
-        val users = friendshipService.getUserFollowers(currentUserId, page, size)
+        val users = friendshipService.getUserFollowers(currentUserId, userId, page, size)
         return ResponseEntity.ok(createResponseMap(users))
     }
 

@@ -13,6 +13,8 @@ data class Post(
     val mediaType: String,
     val caption: String?,
     val createdAt: Instant,
+    val totalLikes: Long,
+    val totalComments: Long,
 
     @Relationship(type = "CREATED_POST", direction = Relationship.Direction.INCOMING)
     val user: User

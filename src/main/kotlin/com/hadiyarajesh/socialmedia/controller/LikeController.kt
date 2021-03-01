@@ -1,6 +1,6 @@
 package com.hadiyarajesh.socialmedia.controller
 
-import com.hadiyarajesh.socialmedia.model.LikeRequest
+import com.hadiyarajesh.socialmedia.model.requests.LikeRequest
 import com.hadiyarajesh.socialmedia.model.User
 import com.hadiyarajesh.socialmedia.service.LikeService
 import org.springframework.data.domain.Slice

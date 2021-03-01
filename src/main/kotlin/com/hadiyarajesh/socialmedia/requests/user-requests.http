@@ -6,5 +6,20 @@ Content-Type: application/json
   "userId": 10000004,
   "username": "username4",
   "fullName": "User4",
-  "isPrivate": true
+  "isPrivate": false
 }
+
+### Edit User
+PATCH http://localhost:8080/users/10000001
+Content-Type: application/json
+
+{
+  "userId": 10000004,
+  "username": "username4",
+  "fullName": "User4",
+  "isPrivate": false
+}
+
+### Delete User
+DELETE http://localhost:8080/users/10000001
+Content-Type: application/json

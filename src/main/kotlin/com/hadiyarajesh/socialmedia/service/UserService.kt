@@ -19,4 +19,13 @@ class UserService(
         return userRepository.findByUserId(userId)
             ?: throw ResourceNotFound("User $userId not found")
     }
+
+    fun editUser(userId: Long, username: String, fullName: String?, isPrivate: Boolean): User {
+        return userRepository.editUser(userId, username, fullName, isPrivate)
+            ?: throw ResourceNotFound("User $userId not found")
+    }
+
+    fun deleteUser(userId: Long) {
+        userRepository.deleteUser(userId)
+    }
 }

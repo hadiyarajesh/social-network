@@ -1,9 +1,33 @@
 ### Create Post
-POST http://localhost:8080/posts/10000003
+POST http://localhost:8080/users/10000004/posts/10000005
 Content-Type: application/json
 
 {
-  "postId": 10000003,
   "mediaType": "PHOTO",
-  "caption": "This is first post of first user"
+  "caption": "This is post caption"
 }
+
+### Get single post
+GET http://localhost:8080/users/10000001/posts/10000001
+Content-Type: application/json
+
+
+### Edit Post
+PATCH http://localhost:8080/users/10000003/posts/10000004
+Content-Type: application/json
+
+{
+  "caption": "This is edited caption"
+}
+
+### Delete Post
+DELETE http://localhost:8080/users/10000003/posts/10000004
+Content-Type: application/json
+
+### Get total posts of user
+GET http://localhost:8080/users/10000001/posts/all
+Content-Type: application/json
+
+### Get total counts of posts by user
+GET http://localhost:8080/users/10000001/posts/count
+Content-Type: application/json

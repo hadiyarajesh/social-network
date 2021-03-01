@@ -14,9 +14,7 @@ data class Comment(
     val commentId: Long,
     val text: String,
     val createdAt: Instant,
-
-    @Relationship(type = "HAS", direction = Relationship.Direction.INCOMING)
-    val post: Post,
+    val totalLikes: Long,
 
     @Relationship(type = "CREATED_COMMENT", direction = Relationship.Direction.INCOMING)
     val user: User

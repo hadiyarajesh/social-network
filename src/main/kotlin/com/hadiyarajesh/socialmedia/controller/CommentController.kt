@@ -1,7 +1,7 @@
 package com.hadiyarajesh.socialmedia.controller
 
 import com.hadiyarajesh.socialmedia.model.Comment
-import com.hadiyarajesh.socialmedia.model.CommentRequest
+import com.hadiyarajesh.socialmedia.model.requests.CommentRequest
 import com.hadiyarajesh.socialmedia.model.User
 import com.hadiyarajesh.socialmedia.service.CommentService
 import org.springframework.data.domain.Slice
@@ -9,18 +9,18 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/comments")
+@RequestMapping("/posts/{postId}/comments")
 class CommentController(
     private val commentService: CommentService
 ) {
-    @PostMapping("create/{userId}")
+    @PostMapping("/")
     fun createComment(
-        @PathVariable userId: Long,
+        @PathVariable postId: Long,
         @RequestBody commentRequest: CommentRequest
     ): ResponseEntity<Map<String, Comment>> {
         val comment = commentService.createComment(
-            userId,
-            commentRequest.postId!!,
+            commentRequest.userId,
+            postId,
             commentRequest.commentId,
             commentRequest.text!!
         )
@@ -28,28 +28,47 @@ class CommentController(
         return ResponseEntity.ok(response)
     }
 
-    @PatchMapping("edit/{userId}")
+    @GetMapping("/{commentId}")
+    fun getComment(@PathVariable commentId: Long): ResponseEntity<Map<String, Comment?>> {
+        val comment = commentService.getComment(10000001, commentId)
+        val response = mapOf("comment" to comment)
+        return ResponseEntity.ok(response)
+    }
+
+    @PatchMapping("/")
     fun editComment(
-        @PathVariable userId: Long,
         @RequestBody commentRequest: CommentRequest
-    ): ResponseEntity<Map<String, Boolean>> {
-        val isCommentEdited = commentService.editComment(userId, commentRequest.commentId, commentRequest.text!!)
-        val response = mapOf("isCommentEdited" to isCommentEdited)
-        return ResponseEntity.ok(response)
+    ): ResponseEntity<Map<String, Comment>> {
+        val comment = commentService.editComment(commentRequest.userId, commentRequest.commentId, commentRequest.text!!)
+        val responseMap = mapOf("comment" to comment)
+        return ResponseEntity.ok(responseMap)
     }
 
-    @DeleteMapping("delete/{userId}")
+    @DeleteMapping("/")
     fun deleteComment(
-        @PathVariable userId: Long,
+        @PathVariable postId: Long,
         @RequestBody commentRequest: CommentRequest
-    ): ResponseEntity<Map<String, Boolean>> {
-        val isCommentDeleted = commentService.deleteComment(userId, commentRequest.postId!!, commentRequest.commentId)
-        val response = mapOf("isCommentDeleted" to isCommentDeleted)
-        return ResponseEntity.ok(response)
+    ): ResponseEntity<Void> {
+        commentService.deleteComment(commentRequest.userId, postId, commentRequest.commentId)
+        return ResponseEntity.noContent().build()
     }
 
-    @GetMapping("/commenters/{postId}")
-    fun getPostCommenters(
+    @GetMapping("/all")
+    fun getAllCommentsByPost(
+        @PathVariable postId: Long,
+        @RequestParam(defaultValue = "0") page: Int,
+        @RequestParam(defaultValue = "10") size: Int
+    ): ResponseEntity<HashMap<String, Any?>> {
+        val comments = commentService.getAllCommentsByPost(postId, page, size)
+        val responseMap = hashMapOf<String, Any?>()
+        responseMap["comments"] = comments.content
+        responseMap["currentPage"] = comments.number
+        responseMap["hasNext"] = comments.hasNext()
+        return ResponseEntity.ok(responseMap)
+    }
+
+    @GetMapping("/commenters")
+    fun getAllPostCommenters(
         @PathVariable postId: Long,
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "5") size: Int
@@ -58,18 +77,18 @@ class CommentController(
         return ResponseEntity.ok(createResponseMap(users))
     }
 
-    @GetMapping("totalcommenters/{postId}")
+    @GetMapping("/total-commenters")
     fun getTotalPostCommenters(@PathVariable postId: Long): ResponseEntity<Map<String, Int>> {
         val totalCommenters = commentService.getTotalPostCommenters(postId)
         val responseMap = mapOf("totalCommenters" to totalCommenters)
         return ResponseEntity.ok(responseMap)
     }
 
-    fun createResponseMap(sliceable: Slice<User>): HashMap<String, Any?> {
+    fun createResponseMap(userSlice: Slice<User>): HashMap<String, Any?> {
         val responseMap = hashMapOf<String, Any?>()
-        responseMap["users"] = sliceable.content
-        responseMap["currentPage"] = sliceable.number
-        responseMap["hasNext"] = sliceable.hasNext()
+        responseMap["users"] = userSlice.content
+        responseMap["currentPage"] = userSlice.number
+        responseMap["hasNext"] = userSlice.hasNext()
         return responseMap
     }
 }

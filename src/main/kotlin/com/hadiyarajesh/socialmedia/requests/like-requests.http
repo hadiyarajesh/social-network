@@ -1,13 +1,13 @@
 ### Like a post
-POST http://localhost:8080/likes/like/10000001
+POST http://localhost:8080/likes/like/post/10000004
 Content-Type: application/json
 
 {
-  "postId": 10000001
+  "postId": 10000004
 }
 
 ### Unlike a post
-POST http://localhost:8080/likes/unlike/10000001
+POST http://localhost:8080/likes/unlike/post/10000001
 Content-Type: application/json
 
 {
@@ -15,12 +15,12 @@ Content-Type: application/json
 }
 
 ### Like a comment
-POST http://localhost:8080/likes/like/comment/10000003
+POST http://localhost:8080/likes/like/comment/10000004
 Content-Type: application/json
 
 {
-  "postId": 10000002,
-  "commentId": 10000002
+  "postId": 10000003,
+  "commentId": 10000007
 }
 
 ### Unlike a comment
@@ -28,7 +28,7 @@ POST http://localhost:8080/likes/unlike/comment/10000003
 Content-Type: application/json
 
 {
-  "commentId": 10000002
+  "commentId": 10000007
 }
 
 

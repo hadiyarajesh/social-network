@@ -1,4 +1,4 @@
-package com.hadiyarajesh.socialmedia.model
+package com.hadiyarajesh.socialmedia.model.requests
 
 data class LikeRequest(
     val postId: Long,
