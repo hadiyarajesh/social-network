@@ -72,7 +72,11 @@ class CommentService(
         return commentRepository.getTotalCommentersCountByPost(postId)
     }
 
-    fun deleteAllCommentsByPost(postId: Long): Long {
-        return commentRepository.deleteAllCommentsByPost(postId)
+    fun deleteAllCommentsByPost(postId: Long) {
+        commentRepository.deleteAllCommentsByPost(postId)
+    }
+
+    fun deleteAllCommentsByUser(userId: Long) {
+        commentRepository.deleteAllCommentsByUser(userId)
     }
 }

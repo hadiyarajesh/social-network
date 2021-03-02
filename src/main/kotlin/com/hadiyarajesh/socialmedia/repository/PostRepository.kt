@@ -47,8 +47,8 @@ interface PostRepository : Neo4jRepository<Post, Long> {
         @Param("userId") userId: Long,
     ): Int
 
-    @Query("CALL apoc.periodic.iterate('MATCH (u:User{userId:\$userId}) RETURN u', 'MATCH (u)-[:CREATED_POST]->(posts) DETACH DELETE posts', {batchSize:100}) yield batches, total return total")
+    @Query("CALL apoc.periodic.iterate('MATCH (u:User{userId:\$userId}) RETURN u', 'MATCH (u)-[:CREATED_POST]->(posts) DETACH DELETE posts', {batchSize:100, params: {userId: \$userId}}) yield batches, total return total")
     fun deleteAllPostsByUser(
         @Param("userId") userId: Long
-    ): Long
+    )
 }

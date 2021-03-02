@@ -12,7 +12,8 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 class UserService(
     private val userRepository: UserRepository,
-    private val postService: PostService
+    private val postService: PostService,
+    private val commentService: CommentService
 ) {
     fun createUser(user: User): User {
         return userRepository.save(user)
@@ -29,8 +30,8 @@ class UserService(
     }
 
     fun deleteUser(userId: Long) {
-        val countOfDeletedPosts = postService.deleteAllPostsByUser(userId)
-        println("deleted posts : $countOfDeletedPosts")
+        commentService.deleteAllCommentsByUser(userId)
+        postService.deleteAllPostsByUser(userId)
         userRepository.deleteUser(userId)
     }
 

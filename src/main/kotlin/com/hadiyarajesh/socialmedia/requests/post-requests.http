@@ -1,8 +1,9 @@
 ### Create Post
-POST http://localhost:8080/users/10000004/posts/10000005
+POST http://localhost:8080/users/10000001/posts/
 Content-Type: application/json
 
 {
+  "postId": 10000001,
   "mediaType": "PHOTO",
   "caption": "This is post caption"
 }
@@ -21,7 +22,7 @@ Content-Type: application/json
 }
 
 ### Delete Post
-DELETE http://localhost:8080/users/10000004/posts/10000005
+DELETE http://localhost:8080/users/10000001/posts/10000001
 Content-Type: application/json
 
 ### Get total posts of user

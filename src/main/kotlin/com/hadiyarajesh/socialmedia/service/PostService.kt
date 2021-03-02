@@ -52,8 +52,7 @@ class PostService(
         if (!postRepository.isPostBelongsToUser(userId, postId)) {
             throw ActionNotAllowed("Post $postId does not belongs to User $userId")
         }
-        val countOfDeletedComments = commentService.deleteAllCommentsByPost(postId)
-        println("deleted comments : $countOfDeletedComments")
+        commentService.deleteAllCommentsByPost(postId)
         postRepository.deletePost(userId, postId)
     }
 
@@ -66,10 +65,13 @@ class PostService(
         return postRepository.getTotalPostsCountByUser(userId)
     }
 
-    fun deleteAllPostsByUser(userId: Long): Long {
-        getAllPostsByUser(userId, 0, Int.MAX_VALUE).forEach { post ->
-            commentService.deleteAllCommentsByPost(post.postId)
+    fun deleteAllPostsByUser(userId: Long) {
+        val totalPost = getTotalPostCountByUser(userId)
+        if (totalPost > 0) {
+            getAllPostsByUser(userId = userId, page = 0, size = totalPost).forEach { post ->
+                commentService.deleteAllCommentsByPost(post.postId)
+            }
+            postRepository.deleteAllPostsByUser(userId)
         }
-        return postRepository.deleteAllPostsByUser(userId)
     }
 }
