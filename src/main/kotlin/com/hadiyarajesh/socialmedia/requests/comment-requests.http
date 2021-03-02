@@ -3,8 +3,8 @@ POST http://localhost:8080/posts/10000001/comments/
 Content-Type: application/json
 
 {
-  "userId": 10000002,
-  "commentId": 10000002,
+  "userId": 10000001,
+  "commentId": 10000001,
   "text": "This is sample comment"
 }
 

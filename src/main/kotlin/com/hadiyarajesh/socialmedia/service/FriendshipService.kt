@@ -69,27 +69,26 @@ class FriendshipService(
     }
 
     fun getUserFollowing(currentUserId: Long, userId: Long, page: Int, size: Int): Slice<User> {
-        val user = userRepository.findByUserId(userId)
-            ?: throw ResourceNotFound("User $userId not found")
-        if(user.isPrivate) {
-            if(!isUserFollowing(currentUserId, userId)) {
-                throw ActionNotAllowed("This is a private account")
-            }
-        }
+        isUserPrivateAndNotFollowedBy(currentUserId, userId)
         val pageable = PageRequest.of(page, size)
         return friendshipRepository.getUserFollowing(currentUserId, pageable)
     }
 
     fun getUserFollowers(currentUserId: Long, userId: Long, page: Int, size: Int): Slice<User> {
+        isUserPrivateAndNotFollowedBy(currentUserId, userId)
+        val pageable = PageRequest.of(page, size)
+        return friendshipRepository.getUserFollowers(currentUserId, pageable)
+    }
+
+    fun isUserPrivateAndNotFollowedBy(currentUserId: Long, userId: Long): Boolean {
         val user = userRepository.findByUserId(userId)
             ?: throw ResourceNotFound("User $userId not found")
-        if(user.isPrivate) {
-            if(!isUserFollowing(currentUserId, userId)) {
+        if (user.isPrivate) {
+            if (!isUserFollowing(currentUserId, userId)) {
                 throw ActionNotAllowed("This is a private account")
             }
         }
-        val pageable = PageRequest.of(page, size)
-        return friendshipRepository.getUserFollowers(currentUserId, pageable)
+        return true
     }
 
     fun isUserFollowing(currentUserId: Long, userToFollowId: Long): Boolean {

@@ -23,7 +23,7 @@ class CommentService(
         val user = userRepository.findByUserId(userId)
             ?: throw ResourceNotFound("User $userId not found")
 
-        if(!postRepository.existsByPostId(postId)) {
+        if (!postRepository.existsByPostId(postId)) {
             throw ResourceNotFound("Post $postId not found")
         }
 
@@ -37,7 +37,7 @@ class CommentService(
             )
         )
 
-        return if(commentRepository.attachCommentToPost(postId, commentId)) {
+        return if (commentRepository.attachCommentToPost(postId, commentId)) {
             comment
         } else {
             throw ResourceNotFound("Post $postId not found")
@@ -68,7 +68,11 @@ class CommentService(
         return userRepository.getPostCommenters(postId, pageable)
     }
 
-    fun getTotalPostCommenters(postId: Long): Int {
+    fun getTotalCommentersCountByPost(postId: Long): Int {
         return commentRepository.getTotalCommentersCountByPost(postId)
+    }
+
+    fun deleteAllCommentsByPost(postId: Long): Long {
+        return commentRepository.deleteAllCommentsByPost(postId)
     }
 }

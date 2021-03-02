@@ -21,7 +21,7 @@ Content-Type: application/json
 }
 
 ### Delete Post
-DELETE http://localhost:8080/users/10000003/posts/10000004
+DELETE http://localhost:8080/users/10000004/posts/10000005
 Content-Type: application/json
 
 ### Get total posts of user

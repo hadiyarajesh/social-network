@@ -9,6 +9,10 @@ Content-Type: application/json
   "isPrivate": false
 }
 
+### Get single User
+GET http://localhost:8080/users/10000001
+Content-Type: application/json
+
 ### Edit User
 PATCH http://localhost:8080/users/10000001
 Content-Type: application/json
@@ -22,4 +26,8 @@ Content-Type: application/json
 
 ### Delete User
 DELETE http://localhost:8080/users/10000001
+Content-Type: application/json
+
+### Get all User
+GET http://localhost:8080/users/all/?page=0&size=10
 Content-Type: application/json

@@ -1,5 +1,6 @@
 package com.hadiyarajesh.socialmedia.service
 
+import com.hadiyarajesh.socialmedia.exception.ActionNotAllowed
 import com.hadiyarajesh.socialmedia.exception.ResourceNotFound
 import com.hadiyarajesh.socialmedia.model.Post
 import com.hadiyarajesh.socialmedia.repository.PostRepository
@@ -14,7 +15,8 @@ import java.time.Instant
 @Transactional
 class PostService(
     private val postRepository: PostRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val commentService: CommentService
 ) {
     fun createPost(userId: Long, postId: Long, mediaType: String, caption: String?): Post {
         val user = userRepository.findByUserId(userId)
@@ -39,11 +41,19 @@ class PostService(
     }
 
     fun editPost(userId: Long, postId: Long, caption: String?): Post {
+        if (!postRepository.isPostBelongsToUser(userId, postId)) {
+            throw ActionNotAllowed("Post $postId does not belongs to User $userId")
+        }
         return postRepository.editPost(userId, postId, caption)
             ?: throw ResourceNotFound("Either user $userId or Post $postId not found")
     }
 
     fun deletePost(userId: Long, postId: Long) {
+        if (!postRepository.isPostBelongsToUser(userId, postId)) {
+            throw ActionNotAllowed("Post $postId does not belongs to User $userId")
+        }
+        val countOfDeletedComments = commentService.deleteAllCommentsByPost(postId)
+        println("deleted comments : $countOfDeletedComments")
         postRepository.deletePost(userId, postId)
     }
 
@@ -54,5 +64,12 @@ class PostService(
 
     fun getTotalPostCountByUser(userId: Long): Int {
         return postRepository.getTotalPostsCountByUser(userId)
+    }
+
+    fun deleteAllPostsByUser(userId: Long): Long {
+        getAllPostsByUser(userId, 0, Int.MAX_VALUE).forEach { post ->
+            commentService.deleteAllCommentsByPost(post.postId)
+        }
+        return postRepository.deleteAllPostsByUser(userId)
     }
 }

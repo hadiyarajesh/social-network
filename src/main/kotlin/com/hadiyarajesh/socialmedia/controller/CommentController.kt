@@ -2,7 +2,6 @@ package com.hadiyarajesh.socialmedia.controller
 
 import com.hadiyarajesh.socialmedia.model.Comment
 import com.hadiyarajesh.socialmedia.model.requests.CommentRequest
-import com.hadiyarajesh.socialmedia.model.User
 import com.hadiyarajesh.socialmedia.service.CommentService
 import org.springframework.data.domain.Slice
 import org.springframework.http.ResponseEntity
@@ -58,13 +57,9 @@ class CommentController(
         @PathVariable postId: Long,
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "10") size: Int
-    ): ResponseEntity<HashMap<String, Any?>> {
+    ): ResponseEntity<HashMap<String, Any>> {
         val comments = commentService.getAllCommentsByPost(postId, page, size)
-        val responseMap = hashMapOf<String, Any?>()
-        responseMap["comments"] = comments.content
-        responseMap["currentPage"] = comments.number
-        responseMap["hasNext"] = comments.hasNext()
-        return ResponseEntity.ok(responseMap)
+        return ResponseEntity.ok(createResponseMap("comments", comments))
     }
 
     @GetMapping("/commenters")
@@ -72,23 +67,23 @@ class CommentController(
         @PathVariable postId: Long,
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "5") size: Int
-    ): ResponseEntity<HashMap<String, Any?>> {
+    ): ResponseEntity<HashMap<String, Any>> {
         val users = commentService.getPostCommenters(postId, page, size)
-        return ResponseEntity.ok(createResponseMap(users))
+        return ResponseEntity.ok(createResponseMap("users", users))
     }
 
     @GetMapping("/total-commenters")
-    fun getTotalPostCommenters(@PathVariable postId: Long): ResponseEntity<Map<String, Int>> {
-        val totalCommenters = commentService.getTotalPostCommenters(postId)
+    fun getTotalCommentersCountByPost(@PathVariable postId: Long): ResponseEntity<Map<String, Int>> {
+        val totalCommenters = commentService.getTotalCommentersCountByPost(postId)
         val responseMap = mapOf("totalCommenters" to totalCommenters)
         return ResponseEntity.ok(responseMap)
     }
 
-    fun createResponseMap(userSlice: Slice<User>): HashMap<String, Any?> {
-        val responseMap = hashMapOf<String, Any?>()
-        responseMap["users"] = userSlice.content
-        responseMap["currentPage"] = userSlice.number
-        responseMap["hasNext"] = userSlice.hasNext()
+    fun <T> createResponseMap(label: String, slice: Slice<T>): HashMap<String, Any> {
+        val responseMap = hashMapOf<String, Any>()
+        responseMap[label] = slice.content
+        responseMap["currentPage"] = slice.number
+        responseMap["hasNext"] = slice.hasNext()
         return responseMap
     }
 }

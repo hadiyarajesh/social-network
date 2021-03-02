@@ -13,9 +13,16 @@ class UserController(
 ) {
     @PostMapping("/")
     fun createUser(@RequestBody user: User): ResponseEntity<Map<String, User>> {
-        val user = userService.createUser(user)
-        val response = mapOf("user" to user)
-        return ResponseEntity.ok(response)
+        val createdUser = userService.createUser(user)
+        val responseMap = mapOf("user" to createdUser)
+        return ResponseEntity.ok(responseMap)
+    }
+
+    @GetMapping("/{userId}")
+    fun getUser(@PathVariable userId: Long): ResponseEntity<Map<String, User>> {
+        val user = userService.getUser(userId)
+        val responseMap = mapOf("user" to user)
+        return ResponseEntity.ok(responseMap)
     }
 
     @PatchMapping("/{userId}")
@@ -34,5 +41,18 @@ class UserController(
     ): ResponseEntity<Void> {
         userService.deleteUser(userId)
         return ResponseEntity.noContent().build()
+    }
+
+    @GetMapping("/all")
+    fun getAllUsers(
+        @RequestParam(defaultValue = "0") page: Int,
+        @RequestParam(defaultValue = "10") size: Int
+    ): ResponseEntity<HashMap<String, Any?>> {
+        val users = userService.getAllUsers(page, size)
+        val responseMap = hashMapOf<String, Any?>()
+        responseMap["users"] = users.content
+        responseMap["currentPage"] = users.number
+        responseMap["hasNext"] = users.hasNext()
+        return ResponseEntity.ok(responseMap)
     }
 }

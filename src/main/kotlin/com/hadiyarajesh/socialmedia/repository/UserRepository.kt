@@ -10,6 +10,9 @@ import org.springframework.data.repository.query.Param
 interface UserRepository : Neo4jRepository<User, Long> {
     fun findByUserId(userId: Long): User?
 
+    @Query("MATCH (u:User{userId:\$userId}) RETURN u")
+    fun getUser(@Param("userId") userId: Long): User?
+
     @Query("MATCH (u:User{userId:\$userId}) SET u.username = \$username, u.fullName = \$fullName, u.isPrivate = \$isPrivate return u")
     fun editUser(
         @Param("userId") userId: Long,
@@ -20,6 +23,9 @@ interface UserRepository : Neo4jRepository<User, Long> {
 
     @Query("MATCH (u:User{userId:\$userId}) DETACH DELETE u")
     fun deleteUser(userId: Long)
+
+    @Query("MATCH (u:User) RETURN u ORDER BY u.id DESC SKIP \$skip LIMIT \$limit")
+    fun getAllUsers(pageable: Pageable): Slice<User>
 
     @Query("MATCH (p:Post{postId:\$postId})-[h:HAS]->(c:Comment) WITH c MATCH (commenters)-[cc: CREATED_COMMENT]->(c) RETURN commenters ORDER BY commenters.id DESC SKIP \$skip LIMIT \$limit")
     fun getPostCommenters(

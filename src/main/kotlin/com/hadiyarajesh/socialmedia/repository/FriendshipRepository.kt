@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface FriendshipRepository : Neo4jRepository<User, Long> {
-    @Query("MATCH (u1:User{userId:\$currentUserId}) MATCH (u2:User{userId:\$userToFollowId}) WITH u1,u2, CASE WHEN u2.isPrivate THEN 'SENT_FOLLOW_REQUEST' ELSE 'FOLLOWING' END as relType CALL apoc.merge.relationship(u1, relType, {since: datetime()}, u2) YIELD rel RETURN true")
+    @Query("MATCH (u1:User{userId:\$currentUserId}) MATCH (u2:User{userId:\$userToFollowId}) WITH u1,u2, CASE WHEN u2.isPrivate THEN 'SENT_FOLLOW_REQUEST' ELSE 'FOLLOWING' END as relType CALL apoc.merge.relationship(u1, relType, {}, {since: datetime()}, u2) YIELD rel RETURN true")
     fun followUser(
         @Param("currentUserId") currentUserId: Long,
         @Param("userToFollowId") userToFollowId: Long

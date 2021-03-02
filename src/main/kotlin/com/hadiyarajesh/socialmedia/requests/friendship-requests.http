@@ -1,17 +1,17 @@
 ### Follow user
-POST http://localhost:8080/friendship/follow/10000002
-Content-Type: application/json
-
-{
-  "userId": 10000003
-}
-
-### Approve Follow request
-POST http://localhost:8080/friendship/approve/10000003
+POST http://localhost:8080/friendship/follow/10000001
 Content-Type: application/json
 
 {
   "userId": 10000002
+}
+
+### Approve Follow request
+POST http://localhost:8080/friendship/approve/10000002
+Content-Type: application/json
+
+{
+  "userId": 10000001
 }
 
 ### Reject follow request
@@ -23,15 +23,15 @@ Content-Type: application/json
 }
 
 ### Cancel follow request
-POST http://localhost:8080/friendship/cancel/10000003
+POST http://localhost:8080/friendship/cancel/10000001
 Content-Type: application/json
 
 {
-  "userId": 10000004
+  "userId": 10000002
 }
 
 ### Unfollow user
-POST http://localhost:8080/friendship/unfollow/10000002
+POST http://localhost:8080/friendship/unfollow/10000001
 Content-Type: application/json
 
 {
@@ -39,7 +39,7 @@ Content-Type: application/json
 }
 
 ### Block user
-POST http://localhost:8080/friendship/block/10000003
+POST http://localhost:8080/friendship/block/10000004
 Content-Type: application/json
 
 {
@@ -71,11 +71,11 @@ GET http://localhost:8080/friendship/sent/10000004
 Content-Type: application/json
 
 ### Get user followers
-GET http://localhost:8080/friendship/followers/10000003?userid=10000004
+GET http://localhost:8080/friendship/followers/10000003?userId=10000002
 Content-Type: application/json
 
 ### Get user following
-GET http://localhost:8080/friendship/following/10000001?userid=10000004
+GET http://localhost:8080/friendship/following/10000003?userId=10000001
 Content-Type: application/json
 
 ### Check if user is following another user

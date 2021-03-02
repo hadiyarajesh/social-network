@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*
 class LikeController(
     private val likeService: LikeService
 ) {
-
     @PostMapping("like/post/{userId}")
     fun likePost(
         @PathVariable userId: Long,
@@ -38,9 +37,9 @@ class LikeController(
         @PathVariable postId: Long,
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "5") size: Int
-    ): ResponseEntity<HashMap<String, Any?>> {
+    ): ResponseEntity<HashMap<String, Any>> {
         val users = likeService.getPostLikers(postId, page, size)
-        return ResponseEntity.ok(createResponseMap(users))
+        return ResponseEntity.ok(createResponseMap("users", users))
     }
 
     @GetMapping("totallikers/post/{postId}")
@@ -76,9 +75,9 @@ class LikeController(
         @RequestParam commentId: Long,
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "5") size: Int
-    ): ResponseEntity<HashMap<String, Any?>> {
+    ): ResponseEntity<HashMap<String, Any>> {
         val users = likeService.getCommentLikers(postId, commentId, page, size)
-        return ResponseEntity.ok(createResponseMap(users))
+        return ResponseEntity.ok(createResponseMap("users", users))
     }
 
     @GetMapping("totallikers/comment/{postId}")
@@ -91,11 +90,11 @@ class LikeController(
         return ResponseEntity.ok(responseMap)
     }
 
-    fun createResponseMap(sliceable: Slice<User>): HashMap<String, Any?> {
-        val responseMap = hashMapOf<String, Any?>()
-        responseMap["users"] = sliceable.content
-        responseMap["currentPage"] = sliceable.number
-        responseMap["hasNext"] = sliceable.hasNext()
+    fun <T> createResponseMap(label: String, slice: Slice<T>): HashMap<String, Any> {
+        val responseMap = hashMapOf<String, Any>()
+        responseMap[label] = slice.content
+        responseMap["currentPage"] = slice.number
+        responseMap["hasNext"] = slice.hasNext()
         return responseMap
     }
 }

@@ -47,8 +47,8 @@ interface CommentRepository : Neo4jRepository<Comment, Long> {
         @Param("postId") postId: Long
     ): Int
 
-    @Query("CALL apoc.periodic.iterate('MATCH (p:Post{postId:\$postId}) RETURN p)', 'MATCH (p)-[:HAS]->(comments) DETACH DELETE comments', {batchSize:1000, parallel:true}) yield batches, total return batches, total")
-    fun deleteAllCommentByPost(
+    @Query("CALL apoc.periodic.iterate('MATCH (p:Post{postId:\$postId}) RETURN p', 'MATCH (p)-[:HAS]->(comments) DETACH DELETE comments', {batchSize:100}) yield batches, total return total")
+    fun deleteAllCommentsByPost(
         @Param("postId") postId: Long
-    )
+    ): Long
 }
