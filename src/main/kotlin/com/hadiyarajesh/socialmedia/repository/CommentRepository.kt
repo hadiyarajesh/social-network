@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface CommentRepository : Neo4jRepository<Comment, Long> {
-    @Query("MATCH (p:Post{postId:\$postId}) MATCH (c:Comment{commentId:\$commentId}) MERGE (p)-[h:HAS]->(c) ON CREATE SET p.totalComments = p.totalComments + 1 RETURN true")
+    @Query("MATCH (p:Post{postId:\$postId}) MATCH (c:Comment{commentId:\$commentId}) MERGE (p)-[h:HAS_COMMENT]->(c) ON CREATE SET p.totalComments = p.totalComments + 1 RETURN true")
     fun attachCommentToPost(
         @Param("postId") postId: Long,
         @Param("commentId") commentId: Long
@@ -29,25 +29,25 @@ interface CommentRepository : Neo4jRepository<Comment, Long> {
         @Param("text") text: String,
     ): Comment?
 
-    @Query("MATCH (u:User{userId:\$userId})-[cc:CREATED_COMMENT]->(c:Comment{commentId: \$commentId}) MATCH (p: Post{postId:\$postId})-[h:HAS]->(c:Comment{commentId:\$commentId}) SET p.totalComments = p.totalComments - 1 DETACH DELETE c RETURN true")
+    @Query("MATCH (u:User{userId:\$userId})-[cc:CREATED_COMMENT]->(c:Comment{commentId: \$commentId}) MATCH (p: Post{postId:\$postId})-[h:HAS_COMMENT]->(c:Comment{commentId:\$commentId}) SET p.totalComments = p.totalComments - 1 DETACH DELETE c RETURN true")
     fun deleteComment(
         @Param("userId") userId: Long,
         @Param("postId") postId: Long,
         @Param("commentId") commentId: Long
     ): Boolean?
 
-    @Query("MATCH (p:Post{postId:\$postId})-[h:HAS]->(comments)<-[cc:CREATED_COMMENT]-(users) WITH users, comments MATCH p=(users)-[cc]->(comments) RETURN p ORDER BY comments.id DESC SKIP \$skip LIMIT \$limit")
+    @Query("MATCH (p:Post{postId:\$postId})-[h:HAS_COMMENT]->(comments)<-[cc:CREATED_COMMENT]-(users) WITH users, comments MATCH p=(users)-[cc]->(comments) RETURN p ORDER BY comments.id DESC SKIP \$skip LIMIT \$limit")
     fun getAllCommentsByPost(
         @Param("postId") postId: Long,
         pageable: Pageable
     ): Slice<Comment>
 
-    @Query("MATCH (p:Post{postId:\$postId})-[h:HAS]->(c:Comment) WITH c MATCH (commenters)-[cc: CREATED_COMMENT]->(c) RETURN count(commenters)")
+    @Query("MATCH (p:Post{postId:\$postId})-[h:HAS_COMMENT]->(c:Comment) WITH c MATCH (commenters)-[cc: CREATED_COMMENT]->(c) RETURN count(commenters)")
     fun getTotalCommentersCountByPost(
         @Param("postId") postId: Long
     ): Int
 
-    @Query("CALL apoc.periodic.iterate('MATCH (p:Post{postId:\$postId}) RETURN p', 'MATCH (p)-[:HAS]->(comments) DETACH DELETE comments', {batchSize:100}) yield batches, total return total")
+    @Query("CALL apoc.periodic.iterate('MATCH (p:Post{postId:\$postId}) RETURN p', 'MATCH (p)-[:HAS_COMMENT]->(comments) DETACH DELETE comments', {batchSize:100}) yield batches, total return total")
     fun deleteAllCommentsByPost(
         @Param("postId") postId: Long
     ): Long

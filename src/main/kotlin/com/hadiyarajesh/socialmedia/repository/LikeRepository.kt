@@ -23,7 +23,7 @@ interface LikeRepository : Neo4jRepository<User, Long> {
         @Param("postId") postId: Long,
     ): Boolean?
 
-    @Query("MATCH (u:User{userId:\$userId}) MATCH (p:Post{postId:\$postId})-[:HAS]->(c:Comment{commentId:\$commentId}) MERGE (u)-[l:LIKED_COMMENT]->(c) ON CREATE SET c.totalLikes = c.totalLikes+1, l.since = datetime() RETURN true")
+    @Query("MATCH (u:User{userId:\$userId}) MATCH (p:Post{postId:\$postId})-[:HAS_COMMENT]->(c:Comment{commentId:\$commentId}) MERGE (u)-[l:LIKED_COMMENT]->(c) ON CREATE SET c.totalLikes = c.totalLikes+1, l.since = datetime() RETURN true")
     fun likeComment(
         @Param("userId") userId: Long,
         @Param("postId") postId: Long,
@@ -47,14 +47,14 @@ interface LikeRepository : Neo4jRepository<User, Long> {
         @Param("postId") postId: Long,
     ): Int
 
-    @Query("MATCH (p:Post{postId:\$postId})-[:HAS]->(c:Comment{commentId:\$commentId}) MATCH (users)-[l:LIKED_COMMENT]->(c) RETURN users ORDER BY users.id DESC SKIP \$skip LIMIT \$limit")
+    @Query("MATCH (p:Post{postId:\$postId})-[:HAS_COMMENT]->(c:Comment{commentId:\$commentId}) MATCH (users)-[l:LIKED_COMMENT]->(c) RETURN users ORDER BY users.id DESC SKIP \$skip LIMIT \$limit")
     fun getAllCommentLikers(
         @Param("postId") postId: Long,
         @Param("commentId") commentId: Long,
         pageable: Pageable
     ): Slice<User>
 
-    @Query("MATCH (p:Post{postId:\$postId})-[:HAS]->(c:Comment{commentId:\$commentId}) MATCH (users)-[l:LIKED_COMMENT]->(c) RETURN count(users)")
+    @Query("MATCH (p:Post{postId:\$postId})-[:HAS_COMMENT]->(c:Comment{commentId:\$commentId}) MATCH (users)-[l:LIKED_COMMENT]->(c) RETURN count(users)")
     fun getTotalLikersCountByComment(
         @Param("postId") postId: Long,
         @Param("commentId") commentId: Long
