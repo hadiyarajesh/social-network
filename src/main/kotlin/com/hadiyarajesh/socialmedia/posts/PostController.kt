@@ -1,8 +1,6 @@
-package com.hadiyarajesh.socialmedia.controller
+package com.hadiyarajesh.socialmedia.posts
 
-import com.hadiyarajesh.socialmedia.model.Post
-import com.hadiyarajesh.socialmedia.model.requests.PostRequest
-import com.hadiyarajesh.socialmedia.service.PostService
+import com.hadiyarajesh.socialmedia.utils.createResponseMapFromSlice
 import org.springframework.data.domain.Slice
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -57,9 +55,9 @@ class PostController(
         @PathVariable userId: Long,
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "10") size: Int
-    ): ResponseEntity<HashMap<String, Any>> {
+    ): ResponseEntity<Map<String, Any>> {
         val posts = postService.getAllPostsByUser(userId, page, size)
-        return ResponseEntity.ok(createResponseMap("posts", posts))
+        return ResponseEntity.ok(posts.createResponseMapFromSlice("posts"))
     }
 
     @GetMapping("/count")
@@ -67,13 +65,5 @@ class PostController(
         val postCount = postService.getTotalPostCountByUser(userId)
         val response = mapOf("totalPosts" to postCount)
         return ResponseEntity.ok(response)
-    }
-
-    fun <T> createResponseMap(label: String, slice: Slice<T>): HashMap<String, Any> {
-        val responseMap = hashMapOf<String, Any>()
-        responseMap[label] = slice.content
-        responseMap["currentPage"] = slice.number
-        responseMap["hasNext"] = slice.hasNext()
-        return responseMap
     }
 }

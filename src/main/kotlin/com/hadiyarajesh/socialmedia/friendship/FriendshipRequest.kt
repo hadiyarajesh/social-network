@@ -1,4 +1,4 @@
-package com.hadiyarajesh.socialmedia.model.requests
+package com.hadiyarajesh.socialmedia.friendship
 
 data class FriendshipRequest(
     val userId: Long

@@ -1,8 +1,6 @@
-package com.hadiyarajesh.socialmedia.controller
+package com.hadiyarajesh.socialmedia.likes
 
-import com.hadiyarajesh.socialmedia.model.requests.LikeRequest
-import com.hadiyarajesh.socialmedia.model.User
-import com.hadiyarajesh.socialmedia.service.LikeService
+import com.hadiyarajesh.socialmedia.utils.createResponseMapFromSlice
 import org.springframework.data.domain.Slice
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -37,9 +35,9 @@ class LikeController(
         @PathVariable postId: Long,
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "5") size: Int
-    ): ResponseEntity<HashMap<String, Any>> {
+    ): ResponseEntity<Map<String, Any>> {
         val users = likeService.getPostLikers(postId, page, size)
-        return ResponseEntity.ok(createResponseMap("users", users))
+        return ResponseEntity.ok(users.createResponseMapFromSlice("users"))
     }
 
     @GetMapping("totallikers/post/{postId}")
@@ -64,7 +62,7 @@ class LikeController(
         @PathVariable userId: Long,
         @RequestBody likeRequest: LikeRequest
     ): ResponseEntity<Map<String, Boolean>> {
-        val isUnliked = likeService.unlikeComment(userId, likeRequest.commentId!!)
+        val isUnliked = likeService.unlikeComment(userId, likeRequest.postId, likeRequest.commentId!!)
         val response = mapOf("isUnliked" to isUnliked)
         return ResponseEntity.ok(response)
     }
@@ -75,9 +73,9 @@ class LikeController(
         @RequestParam commentId: Long,
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "5") size: Int
-    ): ResponseEntity<HashMap<String, Any>> {
+    ): ResponseEntity<Map<String, Any>> {
         val users = likeService.getCommentLikers(postId, commentId, page, size)
-        return ResponseEntity.ok(createResponseMap("users", users))
+        return ResponseEntity.ok(users.createResponseMapFromSlice("users"))
     }
 
     @GetMapping("totallikers/comment/{postId}")
@@ -88,13 +86,5 @@ class LikeController(
         val totalLikers = likeService.getTotalCommentLikers(postId, commentId)
         val responseMap = mapOf("totalLikers" to totalLikers)
         return ResponseEntity.ok(responseMap)
-    }
-
-    fun <T> createResponseMap(label: String, slice: Slice<T>): HashMap<String, Any> {
-        val responseMap = hashMapOf<String, Any>()
-        responseMap[label] = slice.content
-        responseMap["currentPage"] = slice.number
-        responseMap["hasNext"] = slice.hasNext()
-        return responseMap
     }
 }

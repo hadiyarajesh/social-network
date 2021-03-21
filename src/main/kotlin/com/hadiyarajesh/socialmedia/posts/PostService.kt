@@ -1,10 +1,9 @@
-package com.hadiyarajesh.socialmedia.service
+package com.hadiyarajesh.socialmedia.posts
 
 import com.hadiyarajesh.socialmedia.exception.ActionNotAllowed
 import com.hadiyarajesh.socialmedia.exception.ResourceNotFound
-import com.hadiyarajesh.socialmedia.model.Post
-import com.hadiyarajesh.socialmedia.repository.PostRepository
-import com.hadiyarajesh.socialmedia.repository.UserRepository
+import com.hadiyarajesh.socialmedia.users.UserRepository
+import com.hadiyarajesh.socialmedia.comments.CommentService
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Slice
 import org.springframework.stereotype.Service

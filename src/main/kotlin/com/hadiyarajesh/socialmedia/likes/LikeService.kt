@@ -1,7 +1,6 @@
-package com.hadiyarajesh.socialmedia.service
+package com.hadiyarajesh.socialmedia.likes
 
-import com.hadiyarajesh.socialmedia.model.User
-import com.hadiyarajesh.socialmedia.repository.LikeRepository
+import com.hadiyarajesh.socialmedia.users.User
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Slice
 import org.springframework.stereotype.Service
@@ -26,15 +25,15 @@ class LikeService(
     }
 
     fun getTotalPostLikers(postId: Long): Int {
-        return likeRepository.getTotalLikersCountByPost(postId)
+        return likeRepository.getPostLikersCount(postId)
     }
 
     fun likeComment(userId: Long, postId: Long, commentId: Long): Boolean {
         return likeRepository.likeComment(userId, postId, commentId) ?: false
     }
 
-    fun unlikeComment(userId: Long, commentId: Long): Boolean {
-        return likeRepository.unlikeComment(userId, commentId) ?: false
+    fun unlikeComment(userId: Long, postId: Long, commentId: Long): Boolean {
+        return likeRepository.unlikeComment(userId, postId, commentId) ?: false
     }
 
     fun getCommentLikers(postId: Long, commentId: Long, page: Int, size: Int): Slice<User> {
@@ -43,6 +42,6 @@ class LikeService(
     }
 
     fun getTotalCommentLikers(postId: Long, commentId: Long): Int {
-        return likeRepository.getTotalLikersCountByComment(postId, commentId)
+        return likeRepository.getCommentLikersCount(postId, commentId)
     }
 }

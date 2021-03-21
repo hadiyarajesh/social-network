@@ -1,8 +1,6 @@
-package com.hadiyarajesh.socialmedia.controller
+package com.hadiyarajesh.socialmedia.comments
 
-import com.hadiyarajesh.socialmedia.model.Comment
-import com.hadiyarajesh.socialmedia.model.requests.CommentRequest
-import com.hadiyarajesh.socialmedia.service.CommentService
+import com.hadiyarajesh.socialmedia.utils.createResponseMapFromSlice
 import org.springframework.data.domain.Slice
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -28,8 +26,11 @@ class CommentController(
     }
 
     @GetMapping("/{commentId}")
-    fun getComment(@PathVariable commentId: Long): ResponseEntity<Map<String, Comment?>> {
-        val comment = commentService.getComment(10000001, commentId)
+    fun getComment(
+        @PathVariable postId: Long,
+        @PathVariable commentId: Long
+    ): ResponseEntity<Map<String, Comment?>> {
+        val comment = commentService.getComment(postId, commentId)
         val response = mapOf("comment" to comment)
         return ResponseEntity.ok(response)
     }
@@ -57,9 +58,9 @@ class CommentController(
         @PathVariable postId: Long,
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "10") size: Int
-    ): ResponseEntity<HashMap<String, Any>> {
+    ): ResponseEntity<Map<String, Any>> {
         val comments = commentService.getAllCommentsByPost(postId, page, size)
-        return ResponseEntity.ok(createResponseMap("comments", comments))
+        return ResponseEntity.ok(comments.createResponseMapFromSlice("comments"))
     }
 
     @GetMapping("/commenters")
@@ -67,9 +68,9 @@ class CommentController(
         @PathVariable postId: Long,
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "5") size: Int
-    ): ResponseEntity<HashMap<String, Any>> {
+    ): ResponseEntity<Map<String, Any>> {
         val users = commentService.getPostCommenters(postId, page, size)
-        return ResponseEntity.ok(createResponseMap("users", users))
+        return ResponseEntity.ok(users.createResponseMapFromSlice("users"))
     }
 
     @GetMapping("/total-commenters")
@@ -77,13 +78,5 @@ class CommentController(
         val totalCommenters = commentService.getTotalCommentersCountByPost(postId)
         val responseMap = mapOf("totalCommenters" to totalCommenters)
         return ResponseEntity.ok(responseMap)
-    }
-
-    fun <T> createResponseMap(label: String, slice: Slice<T>): HashMap<String, Any> {
-        val responseMap = hashMapOf<String, Any>()
-        responseMap[label] = slice.content
-        responseMap["currentPage"] = slice.number
-        responseMap["hasNext"] = slice.hasNext()
-        return responseMap
     }
 }

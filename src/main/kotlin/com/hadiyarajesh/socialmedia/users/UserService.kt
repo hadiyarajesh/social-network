@@ -1,8 +1,8 @@
-package com.hadiyarajesh.socialmedia.service
+package com.hadiyarajesh.socialmedia.users
 
 import com.hadiyarajesh.socialmedia.exception.ResourceNotFound
-import com.hadiyarajesh.socialmedia.model.User
-import com.hadiyarajesh.socialmedia.repository.UserRepository
+import com.hadiyarajesh.socialmedia.comments.CommentService
+import com.hadiyarajesh.socialmedia.posts.PostService
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Slice
 import org.springframework.stereotype.Service

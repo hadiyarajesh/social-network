@@ -1,5 +1,6 @@
-package com.hadiyarajesh.socialmedia.model
+package com.hadiyarajesh.socialmedia.posts
 
+import com.hadiyarajesh.socialmedia.users.User
 import org.springframework.data.neo4j.core.schema.GeneratedValue
 import org.springframework.data.neo4j.core.schema.Id
 import org.springframework.data.neo4j.core.schema.Relationship

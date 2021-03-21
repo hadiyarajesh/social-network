@@ -1,8 +1,6 @@
-package com.hadiyarajesh.socialmedia.controller
+package com.hadiyarajesh.socialmedia.friendship
 
-import com.hadiyarajesh.socialmedia.model.requests.FriendshipRequest
-import com.hadiyarajesh.socialmedia.model.User
-import com.hadiyarajesh.socialmedia.service.FriendshipService
+import com.hadiyarajesh.socialmedia.utils.createResponseMapFromSlice
 import org.springframework.data.domain.Slice
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -97,9 +95,9 @@ class FriendshipController(
         @PathVariable currentUserId: Long,
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "5") size: Int
-    ): ResponseEntity<HashMap<String, Any>> {
+    ): ResponseEntity<Map<String, Any>> {
         val users = friendshipService.getPendingFollowRequest(currentUserId, page, size)
-        return ResponseEntity.ok(createResponseMap("users", users))
+        return ResponseEntity.ok(users.createResponseMapFromSlice("users"))
     }
 
     @GetMapping("/sent/{currentUserId}")
@@ -107,9 +105,9 @@ class FriendshipController(
         @PathVariable currentUserId: Long,
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "5") size: Int
-    ): ResponseEntity<HashMap<String, Any>> {
+    ): ResponseEntity<Map<String, Any>> {
         val users = friendshipService.getSentFollowRequest(currentUserId, page, size)
-        return ResponseEntity.ok(createResponseMap("users", users))
+        return ResponseEntity.ok(users.createResponseMapFromSlice("users"))
     }
 
     @GetMapping("/followers/{currentUserId}")
@@ -118,9 +116,9 @@ class FriendshipController(
         @RequestParam userId: Long,
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "5") size: Int
-    ): ResponseEntity<HashMap<String, Any>> {
+    ): ResponseEntity<Map<String, Any>> {
         val users = friendshipService.getUserFollowers(currentUserId, userId, page, size)
-        return ResponseEntity.ok(createResponseMap("users", users))
+        return ResponseEntity.ok(users.createResponseMapFromSlice("users"))
     }
 
     @GetMapping("/following/{currentUserId}")
@@ -129,9 +127,9 @@ class FriendshipController(
         @RequestParam userId: Long,
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "5") size: Int
-    ): ResponseEntity<HashMap<String, Any>> {
+    ): ResponseEntity<Map<String, Any>> {
         val users = friendshipService.getUserFollowing(currentUserId, userId, page, size)
-        return ResponseEntity.ok(createResponseMap("users", users))
+        return ResponseEntity.ok(users.createResponseMapFromSlice("users"))
     }
 
     @GetMapping("/checkfollowing/{currentUserId}")
@@ -142,13 +140,5 @@ class FriendshipController(
         val result = friendshipService.isUserFollowing(currentUserId, userId)
         val responseMap = mapOf("isFollowing" to result)
         return ResponseEntity.ok(responseMap)
-    }
-
-    fun <T> createResponseMap(label: String, slice: Slice<T>): HashMap<String, Any> {
-        val responseMap = hashMapOf<String, Any>()
-        responseMap[label] = slice.content
-        responseMap["currentPage"] = slice.number
-        responseMap["hasNext"] = slice.hasNext()
-        return responseMap
     }
 }

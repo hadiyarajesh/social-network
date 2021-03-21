@@ -1,11 +1,9 @@
-package com.hadiyarajesh.socialmedia.service
+package com.hadiyarajesh.socialmedia.comments
 
 import com.hadiyarajesh.socialmedia.exception.ResourceNotFound
-import com.hadiyarajesh.socialmedia.model.Comment
-import com.hadiyarajesh.socialmedia.model.User
-import com.hadiyarajesh.socialmedia.repository.CommentRepository
-import com.hadiyarajesh.socialmedia.repository.PostRepository
-import com.hadiyarajesh.socialmedia.repository.UserRepository
+import com.hadiyarajesh.socialmedia.users.User
+import com.hadiyarajesh.socialmedia.posts.PostRepository
+import com.hadiyarajesh.socialmedia.users.UserRepository
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Slice
 import org.springframework.stereotype.Service
@@ -44,8 +42,8 @@ class CommentService(
         }
     }
 
-    fun getComment(userId: Long, commentId: Long): Comment? {
-        return commentRepository.getComment(userId, commentId)
+    fun getComment(postId: Long, commentId: Long): Comment? {
+        return commentRepository.getComment(postId, commentId)
     }
 
     fun editComment(userId: Long, commentId: Long, text: String): Comment {
@@ -63,7 +61,7 @@ class CommentService(
         return commentRepository.getAllCommentsByPost(postId, pageable)
     }
 
-    fun getPostCommenters(postId: Long, page: Int, size: Int): Slice<User> {
+       fun getPostCommenters(postId: Long, page: Int, size: Int): Slice<User> {
         val pageable = PageRequest.of(page, size)
         return userRepository.getPostCommenters(postId, pageable)
     }

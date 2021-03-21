@@ -1,4 +1,4 @@
-package com.hadiyarajesh.socialmedia.model.requests
+package com.hadiyarajesh.socialmedia.comments
 
 data class CommentRequest(
     val userId: Long,

@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
   "userId": 10000002,
-  "commentId": 10000007,
+  "commentId": 10000002,
   "text": "This is sample comment"
 }
 

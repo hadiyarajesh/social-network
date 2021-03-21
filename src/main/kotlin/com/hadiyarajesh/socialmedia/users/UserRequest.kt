@@ -1,4 +1,4 @@
-package com.hadiyarajesh.socialmedia.model.requests
+package com.hadiyarajesh.socialmedia.users
 
 data class UserRequest(
     val username: String,

@@ -1,6 +1,5 @@
-package com.hadiyarajesh.socialmedia.repository
+package com.hadiyarajesh.socialmedia.users
 
-import com.hadiyarajesh.socialmedia.model.User
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Slice
 import org.springframework.data.neo4j.repository.Neo4jRepository

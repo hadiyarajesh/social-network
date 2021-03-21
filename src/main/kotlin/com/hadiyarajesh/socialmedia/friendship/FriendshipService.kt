@@ -1,10 +1,9 @@
-package com.hadiyarajesh.socialmedia.service
+package com.hadiyarajesh.socialmedia.friendship
 
 import com.hadiyarajesh.socialmedia.exception.ActionNotAllowed
 import com.hadiyarajesh.socialmedia.exception.ResourceNotFound
-import com.hadiyarajesh.socialmedia.model.User
-import com.hadiyarajesh.socialmedia.repository.FriendshipRepository
-import com.hadiyarajesh.socialmedia.repository.UserRepository
+import com.hadiyarajesh.socialmedia.users.User
+import com.hadiyarajesh.socialmedia.users.UserRepository
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Slice
 import org.springframework.stereotype.Service

@@ -1,4 +1,4 @@
-package com.hadiyarajesh.socialmedia.model
+package com.hadiyarajesh.socialmedia.users
 
 import org.springframework.data.neo4j.core.schema.GeneratedValue
 import org.springframework.data.neo4j.core.schema.Id

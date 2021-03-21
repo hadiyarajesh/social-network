@@ -1,8 +1,6 @@
-package com.hadiyarajesh.socialmedia.controller
+package com.hadiyarajesh.socialmedia.users
 
-import com.hadiyarajesh.socialmedia.model.User
-import com.hadiyarajesh.socialmedia.model.requests.UserRequest
-import com.hadiyarajesh.socialmedia.service.UserService
+import com.hadiyarajesh.socialmedia.utils.createResponseMapFromSlice
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -47,12 +45,8 @@ class UserController(
     fun getAllUsers(
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "10") size: Int
-    ): ResponseEntity<HashMap<String, Any?>> {
+    ): ResponseEntity<Map<String, Any>> {
         val users = userService.getAllUsers(page, size)
-        val responseMap = hashMapOf<String, Any?>()
-        responseMap["users"] = users.content
-        responseMap["currentPage"] = users.number
-        responseMap["hasNext"] = users.hasNext()
-        return ResponseEntity.ok(responseMap)
+        return ResponseEntity.ok(users.createResponseMapFromSlice("users"))
     }
 }
