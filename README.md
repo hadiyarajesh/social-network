@@ -1,6 +1,6 @@
-# Socail media
+# Social network
 
-Social media is built with Spring Boot and Spring Data Neo4j to demonstrate use of graph database (neo4j) for building social network.
+Social network is built with Spring Boot and Spring Data Neo4j to demonstrate use of graph database (neo4j) for building social network.
 This repository implement following features essentials to build social network platform 
 
 - Users
