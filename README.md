@@ -9,9 +9,6 @@ This repository implement following features essentials to build social network 
 - Liking
 - Commenting
 
-
-It it still Work-in-progress (WIP).
-
 ## Contribution
 All contributions are welcome. You can create pull request to add more features.
 
